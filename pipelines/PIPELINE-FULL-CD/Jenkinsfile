@@ -17,9 +17,8 @@ pipeline {
                     git checkout -b develop origin/develop
                     git checkout -b master origin/master
                     git merge develop
-                    git tag -m "Merging code to master"
                     git push origin master
-                """
+                """, label: "Merging code to master"
                 }
         }
         stage('Production'){
