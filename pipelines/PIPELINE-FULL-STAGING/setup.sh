@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+#set -x
 python3.7 -m venv todo-list-aws
 source todo-list-aws/bin/activate
 python -m pip install --upgrade pip
