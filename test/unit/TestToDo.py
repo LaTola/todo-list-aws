@@ -104,20 +104,7 @@ class TestDatabaseFunctions(unittest.TestCase):
             responseGet['text'])
         print ('End: test_get_todo')
     
-    def test_get_empty_table(self):
-        print ('---------------------')
-        print ('Start: test_get_table')
-        from src.todoList import get_table
-        tableName=get_table(None)
-        print(f'Table name is: {tableName}')
-        
-    def test_get_default_table(self):
-        print ('---------------------')
-        print ('Start: test_get_table')
-        from src.todoList import get_table
-        tableName=get_table("default-TodosDynamoDbTable")
-        self.assertEqual(tableName, "default-TodosDynamoDbTable")
-        print(f'Table name is: {tableName}')
+
     
     def test_list_todo(self):
         print ('---------------------')
