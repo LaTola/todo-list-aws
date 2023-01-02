@@ -47,7 +47,7 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_table_exists(self):
         print ('---------------------')
         print ('Start: test_table_exists')
-        #self.assertTrue(self.table)  # check if we got a result
+        self.assertTrue(self.table)  # check if we got a result
         #self.assertTrue(self.table_local)  # check if we got a result
 
         print('Table name:' + self.table.name)
@@ -103,6 +103,21 @@ class TestDatabaseFunctions(unittest.TestCase):
             self.text,
             responseGet['text'])
         print ('End: test_get_todo')
+    
+    def test_get_empty_table(self):
+        print ('---------------------')
+        print ('Start: test_get_table')
+        from src.todoList import get_table
+        tableName=get_table(None)
+        print(f'Table name is: {tableName}')
+        
+    def test_get_default_table(self):
+        print ('---------------------')
+        print ('Start: test_get_table')
+        from src.todoList import get_table
+        tableName=get_table("default-TodosDynamoDbTable")
+        self.assertEqual(tableName, "default-TodosDynamoDbTable")
+        print(f'Table name is: {tableName}')
     
     def test_list_todo(self):
         print ('---------------------')
