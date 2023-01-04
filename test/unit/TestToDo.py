@@ -124,7 +124,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_get_table')        
         from src.todoList import get_table
         os.environ["ENDPOINT_OVERRIDE"] = ""
-        table_name=get_table(os.environ["DYNAMODB_TABLE"])
+        table_name=get_table(dynamodb)
         self.assertIsNotNone(table_name)
         print(f"Table name is {table_name}")
         
