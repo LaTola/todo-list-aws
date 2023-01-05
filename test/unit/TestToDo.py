@@ -139,9 +139,9 @@ class TestDatabaseFunctions(unittest.TestCase):
         idItem = json.loads(responsePut['body'])['id']
         print(f'New Item ID: {idItem}')
         print(f"Translate Item {idItem}")
-        responseTranslate = translate(idItem, 'ja') #To japanese
+        responseTranslate = translate(idItem, 'es') #To spanish
         translated_text = json.loads(responseTranslate['body'])['text']
-        print(f"Translation to 'ja': {translated_text}")
+        print(f"Translation to 'es': {translated_text}")
         print(f'Deleting Item ID: {idItem}')
         delete_item(idItem, self.dynamodb)
         print ('End: test_translate')
