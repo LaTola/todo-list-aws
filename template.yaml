@@ -26,7 +26,19 @@ Globals:
         ENDPOINT_OVERRIDE: ""
     
 Resources:
-  
+  TranslateFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: src/
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/LabRole"
+      Handler: get.get
+      Runtime: python3.7
+      Events:
+        Create:
+          Type: Api
+          Properties:
+            Path: /todos/{id}/{lang}
+            Method: get  
   CreateTodoFunction:
     Type: AWS::Serverless::Function 
     Properties:
