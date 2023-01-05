@@ -225,7 +225,7 @@ class TestApi(unittest.TestCase):
             jsonbody['text'], "Integration text example - Initial", "Error en la petición API a {url}"
         )
         # Translate TODO
-        url = BASE_URL+"/todos/" + ID_TODO + "/" ja
+        url = BASE_URL+"/todos/" #+ ID_TODO + "/" ja
         data = {
          "id": ID_TODO,
          "lang": "ja"
