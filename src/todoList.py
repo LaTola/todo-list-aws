@@ -19,9 +19,9 @@ def translate(key, lang):
             )
     except ClientError as e:
         print(e.response['Error']['Message'])
-    else:
-        print(translate_response)
-        return translate_response['TranslatedText']
+
+    print(translate_response)
+    return translate_response['TranslatedText']
 
 
 def get_table(dynamodb=None):
