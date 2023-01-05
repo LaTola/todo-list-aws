@@ -8,14 +8,14 @@ from botocore.exceptions import ClientError
 
 
 def translate(key, lang):
-    ## Caso practico Apartado C
+    # Caso practico Apartado C
     try:
         item=get_item(key)
-        translate_client = boto3.client('translate')
-        translate_response = translate_client.translate_text(
-            text = item['text'],
-            SourceLanguageCode = 'auto',
-            TargetLanguageCode = lang
+        translate_client=boto3.client('translate')
+        translate_response=translate_client.translate_text(
+            text=item['text'],
+            SourceLanguageCode='auto',
+            TargetLanguageCode=lang
             )
     except ClientError as e:
         print(e.response['Error']['Message'])
