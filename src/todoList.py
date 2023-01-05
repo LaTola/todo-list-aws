@@ -10,9 +10,9 @@ from botocore.exceptions import ClientError
 def translate(key, lang):
     # Caso practico Apartado C
     try:
-        item=get_item(key)
-        translate_client=boto3.client('translate')
-        translate_response=translate_client.translate_text(
+        item = get_item(key)
+        translate_client = boto3.client('translate')
+        translate_response = translate_client.translate_text(
             text=item['text'],
             SourceLanguageCode='auto',
             TargetLanguageCode=lang
@@ -21,7 +21,7 @@ def translate(key, lang):
         print(e.response['Error']['Message'])
     else:
         print(translate_response)
-        return(translate_response['TranslatedText'])
+        return translate_response['TranslatedText']
 
 
 def get_table(dynamodb=None):
