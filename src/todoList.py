@@ -13,15 +13,16 @@ def translate(key, lang):
         item = get_item(key)
         translate_client = boto3.client('translate')
         translate_response = translate_client.translate_text(
-            Text=item['text'],
-            SourceLanguageCode='auto',
+            Text=item["text"],
+            SourceLanguageCode="auto",
             TargetLanguageCode=lang
             )
+            
     except ClientError as e:
         print(e.response['Error']['Message'])
 
     print(translate_response)
-    return translate_response['TranslatedText']
+    return translate_response["TranslatedText"]
 
 
 def get_table(dynamodb=None):

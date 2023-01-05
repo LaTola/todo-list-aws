@@ -23,4 +23,5 @@ def translate(event, context):
         "body": json.dumps(result,
                            cls=decimalencoder.DecimalEncoder)
     }
+    logging.log('INFO', "Response is: " + response)
     return response
