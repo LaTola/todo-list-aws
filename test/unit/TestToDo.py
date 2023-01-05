@@ -127,7 +127,25 @@ class TestDatabaseFunctions(unittest.TestCase):
 #        table_name=get_table()
 #        self.assertIsNotNone(table_name)
 #        print(f"Table name is {table_name}")
-        
+
+    def test_translate(self):
+        print ('---------------------')
+        print ('Start: test_update_todo')
+        from src.todoList import translate
+        from src.todoList import put_item
+        from src.todoList import delete_item
+        responsePut = put_item(self.text, self.dynamodb)
+        print('Adding new Item')
+        idItem = json.loads(responsePut['body'])['id']
+        print(f'New Item ID: {idItem}')
+        print(f"Translate Item {idItem}")
+        responseTranslate = translate(idItem, 'fr') #To french
+        translated_text = json.loads(responseTranslate['body'])['text']
+        print(f"Translation to 'fr': {translated_text}")
+        print(f'Deleting Item ID: {idItem}')
+        delete_item(idItem, self.dynamodb)
+        print ('End: test_translate')
+
     def test_update_todo(self):
         print ('---------------------')
         print ('Start: test_update_todo')
