@@ -225,12 +225,12 @@ class TestApi(unittest.TestCase):
             jsonbody['text'], "New Item to Translate - Initial", "Error en la petición API a {url}"
         )
         # Translate TODO
-        url = BASE_URL+"/todos/"
+        url = BASE_URL+"/todos/"+ID_TODO
         data = {
          "id": ID_TODO,
          "lang": "es"
         }
-        print(url+data)
+        print(url+str(data))
         response = requests.get(url, data=json.dumps(data))
         json_response = response.json()
         print('Response Translate todo: ' + str(json_response))
@@ -239,7 +239,7 @@ class TestApi(unittest.TestCase):
             response.status_code, 200, "Error en la petición API a {url}"
         )
         self.assertEqual(
-            json_response['TranslatedText'], "Nuevo elemento para traducir: inicial", "Error en la petición API a {url}"
+            jsonbody['TranslatedText'], "Nuevo elemento para traducir: inicial", "Error en la petición API a {url}"
         )
         #Delete TODO to restore state
         response = requests.delete(url)
