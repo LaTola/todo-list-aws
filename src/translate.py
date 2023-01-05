@@ -38,5 +38,3 @@ def get(event, context):
             "body": ""
         }
     return response
-    
-    
