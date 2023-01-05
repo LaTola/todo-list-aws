@@ -10,10 +10,13 @@ def translate(event, context):
         logging.error("Validation Failed")
         raise Exception("Couldn't translate the todo item.")
         return
-    # update the todo in the database
+    # translate text
+    logging.log('INFO', "Received ID:" + event['pathParameters']['id'])
+    logging.log('INFO', "Received LANG:" + event['pathParameters']['lang'])
     result = todoList.translate(
         event['pathParameters']['id'],
         event['pathParameters']['lang'])
+    logging.log('INFO', "Received response:" + event['pathParameters']['lang'])
     # create a response
     response = {
         "statusCode": 200,
