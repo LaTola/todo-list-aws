@@ -222,10 +222,10 @@ class TestApi(unittest.TestCase):
             response.status_code, 200, "Error en la petición API a {url}"
         )
         self.assertEqual(
-            jsonbody['text'], "Integration text example - Initial", "Error en la petición API a {url}"
+            jsonbody['text'], "New Item to Translate - Initial", "Error en la petición API a {url}"
         )
         # Translate TODO
-        url = BASE_URL+"/todos/" #+ ID_TODO + "/" ja
+        url = BASE_URL+"/todos/"
         data = {
          "id": ID_TODO,
          "lang": "ja"
@@ -238,7 +238,7 @@ class TestApi(unittest.TestCase):
             response.status_code, 200, "Error en la petición API a {url}"
         )
         self.assertEqual(
-            json_response['TranslatedText'], "統合テキストの例", "Error en la petición API a {url}"
+            json_response['TranslatedText'], "翻訳する新規項目-初期", "Error en la petición API a {url}"
         )
         #Delete TODO to restore state
         response = requests.delete(url)
