@@ -230,6 +230,7 @@ class TestApi(unittest.TestCase):
          "id": ID_TODO,
          "lang": "es"
         }
+        print(url+data)
         response = requests.get(url, data=json.dumps(data))
         json_response = response.json()
         print('Response Translate todo: ' + str(json_response))
