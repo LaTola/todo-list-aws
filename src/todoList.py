@@ -6,10 +6,9 @@ import json
 import functools
 from botocore.exceptions import ClientError
 
+
 def translate(key, lang):
-    '''
-    Caso practico Apartado C
-    '''
+    ## Caso practico Apartado C
     try:
         item=get_item(key)
         translate_client = boto3.client('translate')
