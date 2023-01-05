@@ -17,7 +17,6 @@ def translate(key, lang):
             SourceLanguageCode="auto",
             TargetLanguageCode=lang
             )
-            
     except ClientError as e:
         print(e.response['Error']['Message'])
 
