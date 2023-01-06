@@ -14,7 +14,8 @@ def translate(key, lang):
         item = get_item(key)
         translate_client = boto3.client('translate')
         translate_response = translate_client.translate_text(
-            Text=item["text"],
+            #Text=item["text"],
+            Text="This is the dummy text to translate",
             SourceLanguageCode="auto",
             TargetLanguageCode=lang
             )

@@ -16,7 +16,7 @@ def translate(event, context):
     result = todoList.translate(
         event['pathParameters']['id'],
         event['pathParameters']['lang'])
-    logging.log('INFO', "Received response:" + event['pathParameters']['lang'])
+    logging.log('INFO', "Received response:" + str(result))
     # create a response
     response = {
         "statusCode": 200,
