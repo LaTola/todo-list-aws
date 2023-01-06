@@ -4,6 +4,7 @@ import time
 import uuid
 import json
 import functools
+import logging
 from botocore.exceptions import ClientError
 
 
@@ -17,10 +18,11 @@ def translate(key, lang):
             SourceLanguageCode="auto",
             TargetLanguageCode=lang
             )
+        print(translate_response)
+        logging.info(translate_response)
     except ClientError as e:
         print(e.response['Error']['Message'])
 
-    print(translate_response)
     return translate_response["TranslatedText"]
 
 
