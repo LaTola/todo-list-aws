@@ -11,8 +11,9 @@ def translate(event, context):
         raise Exception("Couldn't translate the todo item.")
         return
     # translate text
-    logging.log('INFO', "Received ID:" + event['pathParameters']['id'])
-    logging.log('INFO', "Received LANG:" + event['pathParameters']['lang'])
+    logging.info("Path parameters: " + event['pathParameters'])
+    logging.info("Received ID:" + event['pathParameters']['id'])
+    logging.info("Received LANG:" + event['pathParameters']['lang'])
     result = todoList.translate(
         event['pathParameters']['id'],
         event['pathParameters']['lang'])
