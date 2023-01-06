@@ -12,16 +12,11 @@ def translate(event, context):
         return
     # translate text
     logging.info("Path parameters: " + event['pathParameters'])
-    # logging.info("Received ID:" + event['pathParameters']['id'])
-    # logging.info("Received LANG:" + event['pathParameters']['lang'])
-    logging.info("Received ID:" + event['pathParameters'][0])
-    logging.info("Received LANG:" + event['pathParameters'][1])
-    # result = todoList.translate(
-    #    event['pathParameters']['id'],
-    #    event['pathParameters']['lang'])
+    logging.info("Received ID:" + event['pathParameters']['id'])
+    logging.info("Received LANG:" + event['pathParameters']['lang'])
     result = todoList.translate(
-        event['pathParameters'][0],
-        event['pathParameters'][1])
+       event['pathParameters']['id'],
+       event['pathParameters']['lang'])
 
     logging.log('INFO', "Received response:" + str(result))
     # create a response
