@@ -13,7 +13,7 @@ def translate(event, context):
     logging.log('INFO', "Query string:" + data)
     # translate text
     result = todoList.translate(event['pathParameters']['id'],
-                            event['pathParameters']['lang'])
+                                event['pathParameters']['lang'])
 
     logging.log('INFO', "Received response:" + str(result))
     # create a response
