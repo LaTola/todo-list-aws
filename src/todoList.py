@@ -19,18 +19,14 @@ def translate(id, lang, dynamodb=None):
             SourceLanguageCode='auto',
             TargetLanguageCode=lang
             )
-        # En el ambiente local (no se cual es el problema), translate_response 
-        # viene "None", por lo tanto se genera un error en la funcion en el print(translated_text)
-        if translate_response:
-            translated_text = translate_response.get('TranslatedText')
-            print(translated_text)
-            logging.info(translated_text)
-            return translated_text
-        else: 
-            return "No response from AWS translate"
+            
+        translated_text = translate_response.get('TranslatedText')
+        print(translated_text)
+        logging.info(translated_text)
     except ClientError as e:
         logging.error(e)
         raise(e)
+    return translated_text
     
 
 
