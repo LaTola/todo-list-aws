@@ -13,18 +13,19 @@ def translate(key, lang, dynamodb=None):
     try:
         print(f"Got Params Key: {key}, lang: {lang}, DynamoDB: {dynamodb}")
         todoItem = get_item(key, dynamodb)
-        translate_client = boto3.client('translate')
+        translate_client = boto3.client('translate', 'us-east-1')
         translate_response = translate_client.translate_text(
             Text=todoItem['text'],
             SourceLanguageCode="auto",
             TargetLanguageCode=lang
             )
-        print(translate_response.get('TranslatedText'))
-        logging.info(translate_response.get('TranslatedText'))
+        translated_text=translate_response.get('TranslatedText')
+        print(translated_text)
+        logging.info(translated_text)
     except ClientError as e:
         print(e.response['Error']['Message'])
 
-    return translate_response.get('TranslatedText')
+    return translated_text
 
 
 def get_table(dynamodb=None):
