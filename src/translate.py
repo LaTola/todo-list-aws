@@ -12,7 +12,7 @@ def translate(event, context):
         return
     logging.log('INFO', "Send body:" + data)
     # translate text
-    result = todoList.translate(data('id'), data('lang'))
+    result = todoList.translate(event['pathParameters']['id'], data('lang'))
 
     logging.log('INFO', "Received response:" + str(result))
     # create a response
