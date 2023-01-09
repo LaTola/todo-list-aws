@@ -5,14 +5,14 @@ import todoList
 
 
 def translate(event, context):
-    data = json.loads(event['body'])
-    if 'lang' not in data:
+    data = json.loads(event['pathParameters'])
+    if 'id' not in data or 'lang' not in data:
         logging.error("Validation Failed")
         raise Exception("Couldn't translate the todo item.")
         return
-    logging.log('INFO', "Send body:" + data)
+    logging.log('INFO', "Query string:" + data)
     # translate text
-    result = todoList.translate(event['pathParameters']['id'], data['lang'])
+    result = todoList.translate(event['pathParameters']['id'], event['pathParameters']['lang'])
 
     logging.log('INFO', "Received response:" + str(result))
     # create a response

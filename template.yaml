@@ -37,7 +37,7 @@ Resources:
         Create:
           Type: Api
           Properties:
-            Path: /todos/{id}
+            Path: /todos/{id}/{lang}
             Method: get  
   CreateTodoFunction:
     Type: AWS::Serverless::Function 
@@ -144,5 +144,5 @@ Outputs:
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/todos/{id}"
   TranslateTodoApi:
     Description: "API Gateway endpoint URL for ${opt:stage} stage for Translate TODO"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/todos/{id}"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/todos/{id}/{lang}"
 
