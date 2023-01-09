@@ -37,7 +37,7 @@ Resources:
         Create:
           Type: Api
           Properties:
-            Path: /todos/{id}/{lang}
+            Path: /todos/{id}
             Method: get  
   CreateTodoFunction:
     Type: AWS::Serverless::Function 
