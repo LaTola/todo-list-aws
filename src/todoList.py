@@ -19,7 +19,7 @@ def translate(key, lang, dynamodb=None):
             SourceLanguageCode="auto",
             TargetLanguageCode=lang
             )
-        translated_text=translate_response.get('TranslatedText')
+        translated_text = translate_response.get('TranslatedText')
         print(translated_text)
         logging.info(translated_text)
     except ClientError as e:
