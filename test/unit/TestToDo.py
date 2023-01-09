@@ -134,14 +134,12 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import translate
         from src.todoList import put_item
         from src.todoList import delete_item
-        responsePut = put_item(self.text, self.dynamodb)
-        print('Adding new Item')
+        text = 'Probar la traducción a diferentes idiomas desde el test de la API y desde POSTMAN'
+        responsePut = put_item(text, self.dynamodb)
         idItem = json.loads(responsePut['body'])['id']
-        print(f'New Item ID: {idItem}')
-        print(f"Translate Item {idItem}")
-        responseTranslate = translate(idItem, 'es') #To spanish
-        translated_text = json.loads(responseTranslate['body'])['text']
-        print(f"Translation to 'es': {translated_text}")
+        responseTranslate = translate(idItem, 'en', self.dynamodb)
+        assert(responseTranslate['body'], "Test the translation into different languages from the API test and from POSTMAN")
+        print(f'idItem: {idItem}, Result: {responseTranslate}')
         print(f'Deleting Item ID: {idItem}')
         delete_item(idItem, self.dynamodb)
         print ('End: test_translate')
