@@ -4,7 +4,29 @@ import time
 import uuid
 import json
 import functools
+import logging
 from botocore.exceptions import ClientError
+
+
+def translate(id, lang, dynamodb=None):
+    # Caso practico Apartado C
+    try:
+        print(f'Got Params Key: {id}, lang: {lang}, DynamoDB: {dynamodb}')
+        todoItem = get_item(id, dynamodb)
+        translate_client = boto3.client('translate', 'us-east-1')
+        translate_response = translate_client.translate_text(
+            Text=todoItem['text'],
+            SourceLanguageCode='auto',
+            TargetLanguageCode=lang
+            )
+        translated_text = translate_response.get('TranslatedText')
+        print(translated_text)
+        logging.info(translated_text)
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+        logging.error(e)
+
+    return translated_text
 
 
 def get_table(dynamodb=None):

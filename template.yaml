@@ -26,7 +26,19 @@ Globals:
         ENDPOINT_OVERRIDE: ""
     
 Resources:
-  
+  TranslateTodoFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: src/
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/LabRole"
+      Handler: translate.translate
+      Runtime: python3.7
+      Events:
+        Create:
+          Type: Api
+          Properties:
+            Path: /todos/{id}/{lang}
+            Method: get  
   CreateTodoFunction:
     Type: AWS::Serverless::Function 
     Properties:
@@ -115,6 +127,9 @@ Outputs:
   BaseUrlApi:
     Description: "Base URL of API"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
+  TranslateTodoApi:
+    Description: "API Gateway endpoint URL for ${opt:stage} stage for Translate TODO"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/todos/{id}/{lang}"
   CreateTodoApi:
     Description: "API Gateway endpoint URL for ${opt:stage} stage for Create TODO"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/todos/"
@@ -130,4 +145,3 @@ Outputs:
   DeleteTodoApi:
     Description: "API Gateway endpoint URL for ${opt:stage} stage for Delete TODO"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/todos/{id}"
-
