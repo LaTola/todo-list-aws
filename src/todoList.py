@@ -16,7 +16,7 @@ def translate(id, lang, dynamodb=None):
         translate_client = boto3.client('translate', 'us-east-1')
         translate_response = translate_client.translate_text(
             Text=todoItem['text'],
-            SourceLanguageCode="auto",
+            SourceLanguageCode='auto',
             TargetLanguageCode=lang
             )
         translated_text = translate_response.get('TranslatedText')
