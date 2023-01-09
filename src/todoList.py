@@ -25,7 +25,7 @@ def translate(id, lang, dynamodb=None):
     except ClientError as e:
         print(e.response['Error']['Message'])
         logging.error(e)
-        
+
     return translated_text
 
 
