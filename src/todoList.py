@@ -19,7 +19,7 @@ def translate(id, lang, dynamodb=None):
             SourceLanguageCode='auto',
             TargetLanguageCode=lang
             )
-        
+
         translated_text = translate_response.get('TranslatedText')
         print(translated_text)
         logging.info(translated_text)
@@ -27,6 +27,7 @@ def translate(id, lang, dynamodb=None):
         logging.error(e)
         raise e
     return translated_text
+
 
 def get_table(dynamodb=None):
     if not dynamodb:
