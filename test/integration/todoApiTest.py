@@ -212,7 +212,7 @@ class TestApi(unittest.TestCase):
     #     data = {
     #      "text": "New Item to Translate - Initial"
     #     }
-    #     response = requests.post(url, data=json.dumps(data))
+    #     response = requests.get(url, data=json.dumps(data))
     #     json_response = response.json()
     #     print('Response Add todo: ' + json_response['body'])
     #     jsonbody= json.loads(json_response['body'])

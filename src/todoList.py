@@ -8,11 +8,11 @@ import logging
 from botocore.exceptions import ClientError
 
 
-def translate(key, lang, dynamodb=None):
+def translate(id, lang, dynamodb=None):
     # Caso practico Apartado C
     try:
-        print(f"Got Params Key: {key}, lang: {lang}, DynamoDB: {dynamodb}")
-        todoItem = get_item(key, dynamodb)
+        print(f"Got Params Key: {id}, lang: {lang}, DynamoDB: {dynamodb}")
+        todoItem = get_item(id, dynamodb)
         translate_client = boto3.client('translate', 'us-east-1')
         translate_response = translate_client.translate_text(
             Text=todoItem['text'],
