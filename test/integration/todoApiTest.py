@@ -237,7 +237,7 @@ class TestApi(unittest.TestCase):
         self.assertEqual(
             str(json_response), "Nuevo elemento para traducir: inicial", "Error en la petición API a {url}"
         )
-        print("Delete TODO to restore state"
+        print("Delete TODO to restore state")
         url = BASE_URL+"/todos/"+ID_TODO
         print(f"Send delete post URL: {url}")
         response = requests.delete(url)
