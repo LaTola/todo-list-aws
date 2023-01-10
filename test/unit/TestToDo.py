@@ -140,8 +140,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         print(f'New ItemId is: {idItem}')
         responseTranslate = translate(idItem, 'en', self.dynamodb)
         print(responseTranslate)
-        assert (responseTranslate,
-                "Test the translation into different languages from the API test and from POSTMAN")
+        self.assertEquals(responseTranslate,
+                          "Test the translation into different languages from the API test and from POSTMAN")
         print(f'idItem: {idItem}, Result: {responseTranslate}')
         print(f'Deleting Item ID: {idItem}')
         delete_item(idItem, self.dynamodb)
