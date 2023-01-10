@@ -227,7 +227,7 @@ class TestApi(unittest.TestCase):
          # Translate TODO
          url = BASE_URL+"/todos/"+ID_TODO+'/es'
          print(url+str(data))
-         response = requests.get(url, data=json.dumps(data))
+         response = requests.get(url)
          json_response = response.json()
          print('Response Translate todo: ' + str(json_response))
          jsonbody=json.loads(json_response['body'])
