@@ -18,14 +18,14 @@ def translate(id, lang, dynamodb=None):
             Text=todoItem['text'],
             SourceLanguageCode='auto',
             TargetLanguageCode=lang
-            )
+        )
 
         translated_text = translate_response.get('TranslatedText')
         print(translated_text)
         logging.info(translated_text)
     except ClientError as e:
         logging.error(e)
-        raise e
+
     return translated_text
 
 
@@ -103,12 +103,12 @@ def update_item(key, text, checked, dynamodb=None):
                 'id': key
             },
             ExpressionAttributeNames={
-              '#todo_text': 'text',
+                '#todo_text': 'text',
             },
             ExpressionAttributeValues={
-              ':text': text,
-              ':checked': checked,
-              ':updatedAt': timestamp,
+                ':text': text,
+                ':checked': checked,
+                ':updatedAt': timestamp,
             },
             UpdateExpression='SET #todo_text = :text, '
                              'checked = :checked, '
