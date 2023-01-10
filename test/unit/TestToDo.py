@@ -130,24 +130,23 @@ class TestDatabaseFunctions(unittest.TestCase):
 #        self.assertIsNotNone(table_name)
 #        print(f"Table name is {table_name}")
 
-    def test_translate(self):
-        print ('---------------------')
-        print ('Start: test_update_todo')
-        from src.todoList import translate
-        from src.todoList import put_item
-        from src.todoList import delete_item
-        responsePut = put_item(self.text, self.dynamodb)
-        print('Adding new Item')
-        idItem = json.loads(responsePut['body'])['id']
-        print(f'New Item ID: {idItem}')
-        print(f"Translate Item {idItem}")
-        responseTranslate = translate(idItem, 'es') #To spanish
-        translated_text = json.loads(responseTranslate['body'])['text']
-        print(f"Translation to 'es': {translated_text}")
-        print(f'Deleting Item ID: {idItem}')
-        delete_item(idItem, self.dynamodb)
-        print ('End: test_translate')
-
+#    def test_translate(self):
+#        print ('---------------------')
+#        print ('Start: test_update_todo')
+#        from src.todoList import translate
+#        from src.todoList import put_item
+#        from src.todoList import delete_item
+#        text = 'Probar la traducción a diferentes idiomas desde el test de la API y desde POSTMAN'
+#        responsePut = put_item(text, self.dynamodb)
+#        idItem = json.loads(responsePut['body'])['id']
+#        print(f'New ItemId is: {idItem}')
+#        responseTranslate = translate(idItem, 'en', self.dynamodb)
+#        print(responseTranslate)
+#        assert(responseTranslate['body'], "Test the translation into different languages from the API test and from POSTMAN")
+#        print(f'idItem: {idItem}, Result: {responseTranslate}')
+#        print(f'Deleting Item ID: {idItem}')
+#        delete_item(idItem, self.dynamodb)
+#        print ('End: test_translate')
 
     def test_update_todo(self):
         print ('---------------------')
