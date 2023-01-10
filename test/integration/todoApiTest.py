@@ -237,10 +237,12 @@ class TestApi(unittest.TestCase):
         self.assertEqual(
             str(json_response), "Nuevo elemento para traducir: inicial", "Error en la petición API a {url}"
         )
-        #Delete TODO to restore state
+        print("Delete TODO to restore state"
         url = BASE_URL+"/todos/"+ID_TODO
+        print(f"Send delete post URL: {url}")
         response = requests.delete(url)
         self.assertEqual(
             response.status_code, 200, "Error en la petición API a {url}"
         )
+        print(f'Delete responsse: {response}')
         print('End - integration test Update TODO')
