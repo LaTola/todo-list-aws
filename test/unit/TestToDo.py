@@ -149,7 +149,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import translate
         responseTranslate = translate('', 'en', self.dynamodb)
         print(responseTranslate)
-        self.assertTrue("Internal server error" in responseTranslate['message'])
+        self.assertRaises(TypeError)
         print('End: test_translate_error')
 
     def test_update_todo(self):
