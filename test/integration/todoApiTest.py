@@ -253,4 +253,4 @@ class TestApi(unittest.TestCase):
             response.status_code, 200, "Error en la petición API a {url}"
         )
         print(f'Delete responsse: {response}')
-        print('End - integration test Update TODO')
+        print('End - integration test Translate TODO')
