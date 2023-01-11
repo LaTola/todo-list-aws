@@ -79,7 +79,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import put_item
         # Table mock
         self.assertRaises(Exception, put_item("", self.dynamodb))
-        self.assertRaises(Exception, put_item("", self.dynamodb))
         print('End: test_put_todo_error')
 
     def test_get_todo(self):
@@ -99,9 +98,7 @@ class TestDatabaseFunctions(unittest.TestCase):
             idItem,
             self.dynamodb)
         print('Response Get:' + str(responseGet))
-        self.assertEqual(
-            self.text,
-            responseGet['text'])
+        self.assertEqual(self.text, responseGet['text'])
         print('End: test_get_todo')
 
     def test_list_todo(self):
@@ -109,7 +106,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         print('Start: test_list_todo')
         from src.todoList import put_item
         from src.todoList import get_items
-
         # Testing file functions
         # Table mock
         put_item(self.text, self.dynamodb)
@@ -152,7 +148,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print('Start: test_update_todo')
         from src.todoList import put_item
         from src.todoList import update_item
-        from src.todoList import get_item
+        from src.todoList import delete_item
         updated_text = "Aprender más cosas que DevOps y Cloud en la UNIR"
         # Testing file functions
         # Table mock
@@ -165,6 +161,8 @@ class TestDatabaseFunctions(unittest.TestCase):
                              self.dynamodb)
         print('Result Update Item:' + str(result))
         self.assertEqual(result['text'], updated_text)
+        print(f'Deleting Item ID: {idItem}')
+        delete_item(idItem, self.dynamodb)
         print('End: test_update_todo')
 
     def test_update_todo_error(self):
