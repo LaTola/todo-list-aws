@@ -1,256 +1,235 @@
-import http.client
-import os
+import warnings
 import unittest
-from urllib.request import urlopen
-import requests
+import boto3
+from moto import mock_dynamodb
+import sys
+import os
 import json
 
-import pytest
 
-BASE_URL = os.environ.get("BASE_URL")
-#BASE_URL = "https://m0qwfec693.execute-api.us-east-1.amazonaws.com/Prod"
-print(BASE_URL)
-DEFAULT_TIMEOUT = 2  # in secs
-
-
-@pytest.mark.api
-class TestApi(unittest.TestCase):
-
+@mock_dynamodb
+class TestDatabaseFunctions(unittest.TestCase):
     def setUp(self):
-        self.assertIsNotNone(BASE_URL, "URL no configurada")
-        self.assertTrue(len(BASE_URL) > 8, "URL no configurada")
+        print('---------------------')
+        print('Start: setUp')
+        warnings.filterwarnings(
+            "ignore",
+            category=ResourceWarning,
+            message="unclosed.*<socket.socket.*>")
+        warnings.filterwarnings(
+            "ignore",
+            category=DeprecationWarning,
+            message="callable is None.*")
+        warnings.filterwarnings(
+            "ignore",
+            category=DeprecationWarning,
+            message="Using or importing.*")
+        """Create the mock database and table"""
+        self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        self.is_local = 'true'
+        self.uuid = "123e4567-e89b-12d3-a456-426614174000"
+        self.text = "Aprender DevOps y Cloud en la UNIR"
 
-    def test_api_listtodos(self):
-        print('---------------------------------------')
-        print('Starting - integration test List TODO')
-        # Add TODO
-        url = BASE_URL+"/todos"
-        data = {
-            "text": "Integration text example"
-        }
-        response = requests.post(url, data=json.dumps(data))
-        json_response = response.json()
-        print('Response Add Todo: ' + str(json_response))
-        jsonbody = json.loads(json_response['body'])
-        ID_TODO = jsonbody['id']
-        print('ID todo:'+ID_TODO)
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        self.assertEqual(
-            jsonbody['text'], "Integration text example", "Error en la petición API a {url}"
-        )
-        # List
-        url = BASE_URL+"/todos"
-        response = requests.get(url)
-        print('Response List Todo:' + str(response.json()))
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        self.assertTrue(response.json())
+        from src.todoList import create_todo_table
+        self.table = create_todo_table(self.dynamodb)
+        #self.table_local = create_todo_table()
+        print('End: setUp')
 
-        print('End - integration test List TODO')
+    def tearDown(self):
+        print('---------------------')
+        print('Start: tearDown')
+        """Delete mock database and table after test is run"""
+        self.table.delete()
+        print('Table deleted succesfully')
+        # self.table_local.delete()
+        self.dynamodb = None
+        print('End: tearDown')
 
-    def test_api_addtodo(self):
-        print('---------------------------------------')
-        print('Starting - integration test Add TODO')
-        url = BASE_URL+"/todos"
-        data = {
-            "text": "Integration text example"
-        }
-        response = requests.post(url, data=json.dumps(data))
-        json_response = response.json()
-        print('Response Add Todo: ' + json_response['body'])
-        jsonbody = json.loads(json_response['body'])
-        ID_TODO = jsonbody['id']
-        print('ID todo:'+ID_TODO)
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        self.assertEqual(
-            jsonbody['text'], "Integration text example", "Error en la petición API a {url}"
-        )
-        url = url+"/"+ID_TODO
-        response = requests.delete(url)
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        print('End - integration test Add TODO')
+    def test_table_exists(self):
+        print('---------------------')
+        print('Start: test_table_exists')
+        # self.assertTrue(self.table)  # check if we got a result
+        # self.assertTrue(self.table_local)  # check if we got a result
 
-    def test_api_gettodo(self):
-        print('---------------------------------------')
-        print('Starting - integration test Get TODO')
-        # Add TODO
-        url = BASE_URL+"/todos"
-        data = {
-            "text": "Integration text example - GET"
-        }
-        response = requests.post(url, data=json.dumps(data))
-        json_response = response.json()
-        print('Response Add Todo: ' + str(json_response))
-        jsonbody = json.loads(json_response['body'])
-        ID_TODO = jsonbody['id']
-        print('ID todo:'+ID_TODO)
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        self.assertEqual(
-            jsonbody[
-                'text'], "Integration text example - GET", "Error en la petición API a {url}"
-        )
-        # Test GET TODO
-        url = BASE_URL+"/todos/"+ID_TODO
-        response = requests.get(url)
-        json_response = response.json()
-        print('Response Get Todo: ' + str(json_response))
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        self.assertEqual(
-            json_response[
-                'text'], "Integration text example - GET", "Error en la petición API a {url}"
-        )
-        # Delete TODO to restore state
-        response = requests.delete(url)
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        print('End - integration test Get TODO')
+        print('Table name:' + self.table.name)
+        tableName = os.environ['DYNAMODB_TABLE']
+        # check if the table name is 'ToDo'
+        self.assertIn(tableName, self.table.name)
+        #self.assertIn('todoTable', self.table_local.name)
+        print('End: test_table_exists')
 
-    def test_api_updatetodo(self):
-        print('---------------------------------------')
-        print('Starting - integration test Update TODO')
-        # Add TODO
-        url = BASE_URL+"/todos"
-        data = {
-            "text": "Integration text example - Initial"
-        }
-        response = requests.post(url, data=json.dumps(data))
-        json_response = response.json()
-        print('Response Add todo: ' + json_response['body'])
-        jsonbody = json.loads(json_response['body'])
-        ID_TODO = jsonbody['id']
-        print('ID todo:'+ID_TODO)
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        self.assertEqual(
-            jsonbody[
-                'text'], "Integration text example - Initial", "Error en la petición API a {url}"
-        )
-        # Update TODO
-        url = BASE_URL+"/todos/" + ID_TODO
-        data = {
-            "text": "Integration text example - Modified",
-            "checked": "true"
-        }
-        response = requests.put(url, data=json.dumps(data))
-        json_response = response.json()
-        print('Response Update todo: ' + str(json_response))
-        #jsonbody= json.loads(json_response['body'])
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        self.assertEqual(
-            json_response[
-                'text'], "Integration text example - Modified", "Error en la petición API a {url}"
-        )
-        # Test GET TODO
-        url = BASE_URL+"/todos/"+ID_TODO
-        response = requests.get(url)
-        json_response = response.json()
-        print('Response Get Todo: ' + str(json_response))
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        self.assertEqual(
-            json_response[
-                'text'], "Integration text example - Modified", "Error en la petición API a {url}"
-        )
-        # Delete TODO to restore state
-        response = requests.delete(url)
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        print('End - integration test Update TODO')
+    def test_put_todo(self):
+        print('---------------------')
+        print('Start: test_put_todo')
+        # Testing file functions
+        from src.todoList import put_item
+        # Table local
+        response = put_item(self.text, self.dynamodb)
+        print('Response put_item:' + str(response))
+        self.assertEqual(200, response['statusCode'])
+        # Table mock
+        # self.assertEqual(200, put_item(self.text, self.dynamodb)[
+        #                 'ResponseMetadata']['HTTPStatusCode'])
+        print('End: test_put_todo')
 
-    def test_api_deletetodo(self):
-        print('---------------------------------------')
-        print('Starting - integration test Delete TODO')
-        # Add TODO
-        url = BASE_URL+"/todos"
-        data = {
-            "text": "Integration text example - Initial"
-        }
-        response = requests.post(url, data=json.dumps(data))
-        json_response = response.json()
-        print('Response Add todo: ' + json_response['body'])
-        jsonbody = json.loads(json_response['body'])
-        ID_TODO = jsonbody['id']
-        print('ID todo:'+ID_TODO)
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        self.assertEqual(
-            jsonbody[
-                'text'], "Integration text example - Initial", "Error en la petición API a {url}"
-        )
-        # Delete TODO to restore state
-        response = requests.delete(url + '/' + ID_TODO)
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        print('Response Delete Todo:' + str(response))
-        # Test GET TODO
-        url = BASE_URL+"/todos/"+ID_TODO
-        response = requests.get(url)
-        print('Response Get Todo ' + url+': ' + str(response))
-        self.assertEqual(
-            response.status_code, 404, "Error en la petición API a {url}"
-        )
-        print('End - integration test Delete TODO')
+    def test_put_todo_error(self):
+        print('---------------------')
+        print('Start: test_put_todo_error')
+        # Testing file functions
+        from src.todoList import put_item
+        # Table mock
+        self.assertRaises(Exception, put_item("", self.dynamodb))
+        print('End: test_put_todo_error')
 
-    def test_api_translatetodo(self):
-        print('---------------------------------------')
-        print('Starting - integration test Translate TODO')
-        print("------ Add TODO ------")
-        url = BASE_URL+"/todos"
-        data = {
-            "text": "New Item to Translate - Initial"
-        }
-        response = requests.post(url, data=json.dumps(data))
-        json_response = response.json()
-        print(f"------ Response Add todo: \n{json_response['body']}")
-        jsonbody = json.loads(json_response['body'])
-        ID_TODO = jsonbody['id']
-        print(f"New ID todo: {ID_TODO}")
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        self.assertEqual(
-            jsonbody[
-                'text'], "New Item to Translate - Initial", "Error en la petición API a {url}"
-        )
-        # Translate TODO
-        print(f"------ Translate TODO ID: {ID_TODO}")
-        url = BASE_URL+"/todos/"+ID_TODO+'/es'
-        print(f"GET to Translate URL: {url}")
-        response = requests.get(url)
-        json_response = response.json()
-        print('Response Translate todo: ' + str(json_response))
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        self.assertEqual(
-            str(
-                json_response), "Nuevo elemento para traducir: inicial", "Error en la petición API a {url}"
-        )
-        print("------ Delete TODO to restore state ------")
-        url = BASE_URL+"/todos/"+ID_TODO
-        print(f"Send delete to URL: {url}")
-        response = requests.delete(url)
-        self.assertEqual(
-            response.status_code, 200, "Error en la petición API a {url}"
-        )
-        print(f'Delete responsse: {response}')
-        print('End - integration test Update TODO')
+    def test_get_todo(self):
+        print('---------------------')
+        print('Start: test_get_todo')
+        from src.todoList import get_item
+        from src.todoList import put_item
+
+        # Testing file functions
+        # Table mock
+        responsePut = put_item(self.text, self.dynamodb)
+        print('Response put_item:' + str(responsePut))
+        idItem = json.loads(responsePut['body'])['id']
+        print('Id item:' + idItem)
+        self.assertEqual(200, responsePut['statusCode'])
+        responseGet = get_item(
+            idItem,
+            self.dynamodb)
+        print('Response Get:' + str(responseGet))
+        self.assertEqual(self.text, responseGet['text'])
+        print('End: test_get_todo')
+
+    def test_list_todo(self):
+        print('---------------------')
+        print('Start: test_list_todo')
+        from src.todoList import put_item
+        from src.todoList import get_items
+        # Testing file functions
+        # Table mock
+        put_item(self.text, self.dynamodb)
+        result = get_items(self.dynamodb)
+        print('Response GetItems' + str(result))
+        self.assertTrue(len(result) == 1)
+        self.assertTrue(result[0]['text'] == self.text)
+        print('End: test_list_todo')
+
+    # def test_get_table(self):
+    #     print('---------------------')
+    #     print('Start: test_get_table')
+    #     from src.todoList import get_table
+    #     os.environ["ENDPOINT_OVERRIDE"] = ""
+    #     table_name = get_table()
+    #     self.assertIsNotNone(table_name)
+    #     print(f"Table name is {table_name}")
+
+    # def test_translate(self):
+    #     print('---------------------')
+    #     print('Start: test_translate')
+    #     from src.todoList import translate
+    #     from src.todoList import put_item
+    #     from src.todoList import delete_item
+    #     text = 'Probar la traducción a diferentes idiomas desde el test de la API y desde POSTMAN'
+    #     responsePut = put_item(text, self.dynamodb)
+    #     idItem = json.loads(responsePut['body'])['id']
+    #     print(f'New ItemId is: {idItem}')
+    #     responseTranslate = translate(idItem, 'en', self.dynamodb)
+    #     print(responseTranslate)
+    #     self.assertEquals(responseTranslate,
+    #                       "Test the translation into different languages from the API test and from POSTMAN")
+    #     print(f'idItem: {idItem}, Result: {responseTranslate}')
+    #     print(f'Deleting Item ID: {idItem}')
+    #     delete_item(idItem, self.dynamodb)
+    #     print('End: test_translate')
+
+    def test_translate_error(self):
+        print('---------------------')
+        print('Start: test_translate_error')
+        from src.todoList import translate
+        self.assertRaises(TypeError, translate('', 'en', self.dynamodb))
+        print('End: test_translate_error')
+
+    def test_update_todo(self):
+        print('---------------------')
+        print('Start: test_update_todo')
+        from src.todoList import put_item
+        from src.todoList import update_item
+        from src.todoList import delete_item
+        updated_text = "Aprender más cosas que DevOps y Cloud en la UNIR"
+        # Testing file functions
+        # Table mock
+        responsePut = put_item(self.text, self.dynamodb)
+        print('Response PutItem' + str(responsePut))
+        idItem = json.loads(responsePut['body'])['id']
+        print('Id item:' + idItem)
+        result = update_item(idItem, updated_text,
+                             "false",
+                             self.dynamodb)
+        print('Result Update Item:' + str(result))
+        self.assertEqual(result['text'], updated_text)
+        print(f'Deleting Item ID: {idItem}')
+        delete_item(idItem, self.dynamodb)
+        print('End: test_update_todo')
+
+    def test_update_todo_error(self):
+        print('---------------------')
+        print('Start: atest_update_todo_error')
+        from src.todoList import put_item
+        from src.todoList import update_item
+        updated_text = "Aprender más cosas que DevOps y Cloud en la UNIR"
+        # Testing file functions
+        # Table mock
+        responsePut = put_item(self.text, self.dynamodb)
+        print('Response PutItem' + str(responsePut))
+        self.assertRaises(
+            Exception,
+            update_item(
+                updated_text,
+                "",
+                "false",
+                self.dynamodb))
+        self.assertRaises(
+            TypeError,
+            update_item(
+                "",
+                self.uuid,
+                "false",
+                self.dynamodb))
+        self.assertRaises(
+            Exception,
+            update_item(
+                updated_text,
+                self.uuid,
+                "",
+                self.dynamodb))
+        print('End: atest_update_todo_error')
+
+    def test_delete_todo(self):
+        print('---------------------')
+        print('Start: test_delete_todo')
+        from src.todoList import delete_item
+        from src.todoList import put_item
+        from src.todoList import get_items
+        # Testing file functions
+        # Table mock
+        responsePut = put_item(self.text, self.dynamodb)
+        print('Response PutItem' + str(responsePut))
+        idItem = json.loads(responsePut['body'])['id']
+        print('Id item:' + idItem)
+        delete_item(idItem, self.dynamodb)
+        print('Item deleted succesfully')
+        self.assertTrue(len(get_items(self.dynamodb)) == 0)
+        print('End: test_delete_todo')
+
+    def test_delete_todo_error(self):
+        print('---------------------')
+        print('Start: test_delete_todo_error')
+        from src.todoList import delete_item
+        # Testing file functions
+        self.assertRaises(TypeError, delete_item("", self.dynamodb))
+        print('End: test_delete_todo_error')
+
+
+if __name__ == '__main__':
+    unittest.main()
