@@ -216,7 +216,7 @@ class TestApi(unittest.TestCase):
         print("------ Add TODO ------")
         url = BASE_URL+"/todos"
         data = {
-            "text": "New Item to Translate - Initial"
+            "text": "Probar la traducción a diferentes idiomas desde el test de la API y desde POSTMAN"
         }
         response = requests.post(url, data=json.dumps(data))
         json_response = response.json()
@@ -227,13 +227,13 @@ class TestApi(unittest.TestCase):
         self.assertEqual(
             response.status_code, 200, "Error en la petición API a {url}"
         )
-        self.assertEqual(
-            jsonbody[
-                'text'], "New Item to Translate - Initial", "Error en la petición API a {url}"
-        )
+        self.assertEqual(jsonbody['text'], 
+                        "Probar la traducción a diferentes idiomas desde el test de la API y desde POSTMAN", 
+                        "Error en la petición API a {url}"
+                        )
         # Translate TODO
         print(f"------ Translate TODO ID: {ID_TODO}")
-        url = BASE_URL+"/todos/"+ID_TODO+'/es'
+        url = BASE_URL+"/todos/"+ID_TODO+'/en'
         print(f"GET to Translate URL: {url}")
         response = requests.get(url)
         json_response = response.json()
@@ -241,10 +241,10 @@ class TestApi(unittest.TestCase):
         self.assertEqual(
             response.status_code, 200, "Error en la petición API a {url}"
         )
-        self.assertEqual(
-            str(
-                json_response), "Nuevo elemento para traducir: inicial", "Error en la petición API a {url}"
-        )
+        self.assertEqual(str(json_response), 
+                        "Test the translation into different languages from the API test and from POSTMAN", 
+                        "Error en la petición API a {url}"
+                        )
         print("------ Delete TODO to restore state ------")
         url = BASE_URL+"/todos/"+ID_TODO
         print(f"Send delete to URL: {url}")
