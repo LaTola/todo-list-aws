@@ -147,9 +147,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print('---------------------')
         print('Start: test_translate_error')
         from src.todoList import translate
-        responseTranslate = translate('', 'en', self.dynamodb)
-        print(responseTranslate)
-        self.assertRaises(TypeError)
+        self.assertRaises(TypeError, translate('', 'en', self.dynamodb))
         print('End: test_translate_error')
 
     def test_update_todo(self):
