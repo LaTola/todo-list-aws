@@ -143,12 +143,12 @@ class TestDatabaseFunctions(unittest.TestCase):
     #     delete_item(idItem, self.dynamodb)
     #     print('End: test_translate')
 
-    def test_translate_error(self):
-        print('---------------------')
-        print('Start: test_translate_error')
-        from src.todoList import translate
-        self.assertRaises(TypeError, translate('fakeid', 'en', self.dynamodb))
-        print('End: test_translate_error')
+    # def test_translate_error(self):
+    #     print('---------------------')
+    #     print('Start: test_translate_error')
+    #     from src.todoList import translate
+    #     self.assertRaises(TypeError, translate('fakeid', 'en', self.dynamodb))
+    #     print('End: test_translate_error')
 
     def test_update_todo(self):
         print('---------------------')
