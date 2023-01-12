@@ -137,10 +137,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         print(f"Add Item response: {responsePut}")
         idItem = json.loads(responsePut['body'])['id']
         print(f'New ItemId is: {idItem}')
-        url = BASE_URL+"/todos/"+idItem+'/es'
+        url = BASE_URL+'/todos/'+idItem+'/es'
         responseTranslate = requests.get(url)
         print(f"Translate response: {responseTranslate}")
-        self.assertEqual(responseTranslate,
+        self.assertEqual(responseTranslate['body'],
                          "UnitTest para traducir tareas pendientes a diferentes idiomas.")
         print(f'idItem: {idItem}, Result: {responseTranslate}')
         print(f'Deleting Item ID: {idItem}')
@@ -150,7 +150,7 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_translate_error(self):
         print('---------------------')
         print('Start: test_translate_error')
-        url = BASE_URL+"/todos/"+'fakeid'+'/es'
+        url = BASE_URL+'/todos/'+'fakeid'+'/es'
         responseTranslate = requests.get(url)     
         self.assertEqual(responseTranslate.status_code, 500)
         print('End: test_translate_error')
