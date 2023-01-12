@@ -132,11 +132,12 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import delete_item
         text = "UnitTest for translating To-Do's into different languages."
         responsePut = put_item(text, self.dynamodb)
+        print(f"Add Item response: {responsePut}")
         idItem = json.loads(responsePut['body'])['id']
         print(f'New ItemId is: {idItem}')
         responseTranslate = translate(idItem, 'es', self.dynamodb)
-        print(responseTranslate)
-        self.assertEquals(responseTranslate,
+        print(f"Translate response: {responseTranslate}")
+        self.assertEqual(responseTranslate,
                          "UnitTest para traducir tareas pendientes a diferentes idiomas.")
         print(f'idItem: {idItem}, Result: {responseTranslate}')
         print(f'Deleting Item ID: {idItem}')
