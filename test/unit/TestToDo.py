@@ -46,17 +46,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         print('End: tearDown')
 
     def test_table_exists(self):
-<<<<<<< HEAD
         print ('---------------------')
         print ('Start: test_table_exists')
         self.assertTrue(self.table)  # check if we got a result
         #self.assertTrue(self.table_local)  # check if we got a result
-=======
-        print('---------------------')
-        print('Start: test_table_exists')
-        # self.assertTrue(self.table)  # check if we got a result
-        # self.assertTrue(self.table_local)  # check if we got a result
->>>>>>> develop
 
         print('Table name:' + self.table.name)
         tableName = os.environ['DYNAMODB_TABLE']
