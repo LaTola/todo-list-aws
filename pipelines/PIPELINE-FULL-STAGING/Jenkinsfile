@@ -10,15 +10,15 @@ pipeline {
         }
         stage('Test'){
             steps{
-                echo 'Static program analysis:'
-                sh "bash pipelines/PIPELINE-FULL-STAGING/static_test.sh"
-                echo 'Unit testing:'
-                def BASE_URL = sh( script: "aws cloudformation describe-stacks --stack-name todo-list-aws-staging --query 'Stacks[0].Outputs[?OutputKey==`BaseUrlApi`].OutputValue' --region us-east-1 --output text",
+                script {
+                    echo 'Static program analysis:'
+                    sh "bash pipelines/PIPELINE-FULL-STAGING/static_test.sh"
+                    echo 'Unit testing:'
+                    def BASE_URL = sh( script: "aws cloudformation describe-stacks --stack-name todo-list-aws-staging --query 'Stacks[0].Outputs[?OutputKey==`BaseUrlApi`].OutputValue' --region us-east-1 --output text",
                         returnStdout: true)
-                sh '''
                     export BASE_URL=$BASE_URL
                     pipelines/PIPELINE-FULL-STAGING/unit_test.sh"
-                '''
+                }
             }
             post {
                 always {
