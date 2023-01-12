@@ -5,7 +5,9 @@ from moto import mock_dynamodb
 import sys
 import os
 import json
+import requests
 
+BASE_URL = os.environ.get("BASE_URL")
 
 @mock_dynamodb
 class TestDatabaseFunctions(unittest.TestCase):
@@ -135,7 +137,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         print(f"Add Item response: {responsePut}")
         idItem = json.loads(responsePut['body'])['id']
         print(f'New ItemId is: {idItem}')
-        responseTranslate = translate(idItem, 'es', self.dynamodb)
+        url = BASE_URL+"/todos/"+idItem+'/es'
+        responseTranslate = requests.get(url)
         print(f"Translate response: {responseTranslate}")
         self.assertEqual(responseTranslate,
                          "UnitTest para traducir tareas pendientes a diferentes idiomas.")
@@ -147,8 +150,9 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_translate_error(self):
         print('---------------------')
         print('Start: test_translate_error')
-        from src.todoList import translate
-        self.assertRaises(TypeError, translate('fakeid', 'en', self.dynamodb))
+        url = BASE_URL+"/todos/"+'fakeid'+'/es'
+        responseTranslate = requests.get(url)     
+        self.assertEqual(responseTranslate.status_code, 500)
         print('End: test_translate_error')
     
     def test_update_todo(self):
