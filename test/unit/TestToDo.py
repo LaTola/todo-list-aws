@@ -146,6 +146,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         delete_item(idItem, self.dynamodb)
         print('End: test_translate')
 
+    @mock_translate
     def test_translate_error(self):
         print('---------------------')
         print('Start: test_translate_error')
