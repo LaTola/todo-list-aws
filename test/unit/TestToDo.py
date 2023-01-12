@@ -5,9 +5,7 @@ from moto import mock_dynamodb
 import sys
 import os
 import json
-import requests
 
-BASE_URL = os.environ.get("BASE_URL")
 
 @mock_dynamodb
 class TestDatabaseFunctions(unittest.TestCase):
@@ -48,10 +46,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         print('End: tearDown')
 
     def test_table_exists(self):
-        print('---------------------')
-        print('Start: test_table_exists')
-        # self.assertTrue(self.table)  # check if we got a result
-        # self.assertTrue(self.table_local)  # check if we got a result
+        print ('---------------------')
+        print ('Start: test_table_exists')
+        self.assertTrue(self.table)  # check if we got a result
+        #self.assertTrue(self.table_local)  # check if we got a result
 
         print('Table name:' + self.table.name)
         tableName = os.environ['DYNAMODB_TABLE']
@@ -137,10 +135,9 @@ class TestDatabaseFunctions(unittest.TestCase):
         print(f"Add Item response: {responsePut}")
         idItem = json.loads(responsePut['body'])['id']
         print(f'New ItemId is: {idItem}')
-        url = os.environ["STAGING_API_URL"]+'/todos/'+idItem+'/es'
-        responseTranslate = requests.get(url)
+        responseTranslate = translate(idItem, 'es', self.dynamodb)
         print(f"Translate response: {responseTranslate}")
-        self.assertEqual(responseTranslate['body'],
+        self.assertEqual(responseTranslate,
                          "UnitTest para traducir tareas pendientes a diferentes idiomas.")
         print(f'idItem: {idItem}, Result: {responseTranslate}')
         print(f'Deleting Item ID: {idItem}')
@@ -150,9 +147,8 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_translate_error(self):
         print('---------------------')
         print('Start: test_translate_error')
-        url = ["STAGING_API_URL"]+'/todos/'+'fakeid'+'/es'
-        responseTranslate = requests.get(url)     
-        self.assertEqual(responseTranslate.status_code, 500)
+        from src.todoList import translate
+        self.assertRaises(TypeError, translate('fakeid', 'en', self.dynamodb))
         print('End: test_translate_error')
     
     def test_update_todo(self):
