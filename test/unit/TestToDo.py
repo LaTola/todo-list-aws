@@ -2,7 +2,6 @@ import warnings
 import unittest
 import boto3
 from moto import mock_dynamodb
-from moto import mock_translate
 import sys
 import os
 import json
@@ -125,7 +124,6 @@ class TestDatabaseFunctions(unittest.TestCase):
     #     self.assertIsNotNone(table_name)
     #     print(f"Table name is {table_name}")
 
-    @mock_translate
     def test_translate(self):
         print('---------------------')
         print('Start: test_translate')
@@ -146,7 +144,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         delete_item(idItem, self.dynamodb)
         print('End: test_translate')
 
-    @mock_translate
     def test_translate_error(self):
         print('---------------------')
         print('Start: test_translate_error')
