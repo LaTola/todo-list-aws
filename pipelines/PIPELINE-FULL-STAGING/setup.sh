@@ -14,7 +14,7 @@ python -m pip install pytest==7.2.0
 #For unit testing
 python -m pip install boto3==1.26.27
 python -m pip install moto==4.0.11
-python -m pip install moto[translate]
+python -m pip install 'moto[translate]'
 python -m pip install mock==4.0.3
 python -m pip install coverage==6.5.0
 
