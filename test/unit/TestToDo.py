@@ -46,10 +46,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         print('End: tearDown')
 
     def test_table_exists(self):
-        print ('---------------------')
-        print ('Start: test_table_exists')
+        print('---------------------')
+        print('Start: test_table_exists')
         self.assertTrue(self.table)  # check if we got a result
-        #self.assertTrue(self.table_local)  # check if we got a result
+        # self.assertTrue(self.table_local)  # check if we got a result
 
         print('Table name:' + self.table.name)
         tableName = os.environ['DYNAMODB_TABLE']
@@ -150,7 +150,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import translate
         self.assertRaises(TypeError, translate('fakeid', 'en', self.dynamodb))
         print('End: test_translate_error')
-    
+
     def test_update_todo(self):
         print('---------------------')
         print('Start: test_update_todo')
