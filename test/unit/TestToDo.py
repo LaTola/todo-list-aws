@@ -115,14 +115,14 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertTrue(result[0]['text'] == self.text)
         print('End: test_list_todo')
 
-    # def test_get_table(self):
-    #     print('---------------------')
-    #     print('Start: test_get_table')
-    #     from src.todoList import get_table
-    #     os.environ["ENDPOINT_OVERRIDE"] = ""
-    #     table_name = get_table()
-    #     self.assertIsNotNone(table_name)
-    #     print(f"Table name is {table_name}")
+    def test_get_table(self):
+        print('---------------------')
+        print('Start: test_get_table')
+        from src.todoList import get_table
+        os.environ["ENDPOINT_OVERRIDE"] = ""
+        table_name = get_table()
+        self.assertIsNotNone(table_name)
+        print(f"Table name is {table_name}")
 
     def test_translate(self):
         print('---------------------')
