@@ -124,33 +124,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertIsNotNone(table_name)
         print(f"Table name is {table_name}")
 
-    # def test_translate(self):
-    #     print('---------------------')
-    #     print('Start: test_translate')
-    #     from src.todoList import translate
-    #     from src.todoList import put_item
-    #     from src.todoList import delete_item
-    #     text = "UnitTest for translating To-Do's into different languages."
-    #     responsePut = put_item(text, self.dynamodb)
-    #     print(f"Add Item response: {responsePut}")
-    #     idItem = json.loads(responsePut['body'])['id']
-    #     print(f'New ItemId is: {idItem}')
-    #     responseTranslate = translate(idItem, 'es', self.dynamodb)
-    #     print(f"Translate response: {responseTranslate}")
-    #     self.assertEqual(responseTranslate, None)  # Cheater
-    #     # "UnitTest para traducir tareas pendientes a diferentes idiomas.")
-    #     print(f'idItem: {idItem}, Result: {responseTranslate}')
-    #     print(f'Deleting Item ID: {idItem}')
-    #     delete_item(idItem, self.dynamodb)
-    #     print('End: test_translate')
-
-    # def test_translate_error(self):
-    #     print('---------------------')
-    #     print('Start: test_translate_error')
-    #     from src.todoList import translate
-    #     self.assertRaises(TypeError, translate(self.uuid, 'en', self.dynamodb))
-    #     print('End: test_translate_error')
-
     def test_update_todo(self):
         print('---------------------')
         print('Start: test_update_todo')
