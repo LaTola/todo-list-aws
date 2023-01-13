@@ -135,7 +135,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print(f"Add Item response: {responsePut}")
         idItem = json.loads(responsePut['body'])['id']
         print(f'New ItemId is: {idItem}')
-        responseTranslate = translate(self.uuid, 'es', self.dynamodb)
+        responseTranslate = translate(idItem, 'es', self.dynamodb)
         print(f"Translate response: {responseTranslate}")
         self.assertEqual(responseTranslate,
                          "UnitTest para traducir tareas pendientes a diferentes idiomas.")
