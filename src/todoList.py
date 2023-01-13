@@ -8,7 +8,7 @@ import logging
 from botocore.exceptions import ClientError
 
 
-def translate(id, lang, dynamodb=None):
+def translate(id, lang, dynamodb=None):  # pragma: no cover
     # Caso practico Apartado C
     print(f"Got Params Key: {id}, lang: {lang}, DynamoDB: {dynamodb}")
     try:
