@@ -205,5 +205,5 @@ class TestDatabaseFunctions(unittest.TestCase):
         print('End: test_delete_todo_error')
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     unittest.main()
